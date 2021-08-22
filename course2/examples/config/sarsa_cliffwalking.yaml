@@ -13,7 +13,7 @@ hyperparameters:
   gamma: 0.9
   learn_freq: 1
   learn_terminal: false
-  lr: 0.1
+  lr: 0.03
   marl: false
   use_network: false
 seedparameters:
@@ -22,6 +22,6 @@ seedparameters:
   seed_random: 1
 trainingparameters:
   evaluate_rate: 50
-  max_episodes: 1000
-  render: true
+  max_episodes: 4000
+  render: false
   save_interval: 100

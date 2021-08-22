@@ -15,13 +15,15 @@ from critic import Critic
 # TODO: Complete DQN algo under evaluation.
 class DQN:
     def __init__(self):
-        pass
+        self.critic_net = Critic(state_dim,  action_dim, hidden_size)
 
     def choose_action(self, observation):
-        pass
+        observation = torch.tensor(observation, dtype=torch.float).view(1, -1)
+        action = torch.argmax(self.critic_net(observation)).item()
+        return action
 
     def load(self, file):
-        pass
+        self.critic_net.load_state_dict(torch.load(file))
 
 
 def action_from_algo_to_env(joint_action):
@@ -40,7 +42,7 @@ action_dim = 2
 hidden_size = 64
 
 # TODO: Once start to train, u can get saved model. Here we just say it is critic.pth.
-critic_net = os.path.dirname(os.path.abspath(__file__)) + '/critic.pth'
+critic_net = os.path.dirname(os.path.abspath(__file__)) + '/critic_1500.pth'
 agent = DQN()
 agent.load(critic_net)
 

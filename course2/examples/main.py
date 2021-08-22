@@ -17,3 +17,4 @@ if __name__ == '__main__':
 
     runner = Runner(args)
     runner.run()
+    runner.evaluate(10)

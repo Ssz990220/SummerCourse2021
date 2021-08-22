@@ -11,7 +11,7 @@ from common.log_path import make_logpath
 from agents.singleagent import SingleRLAgent
 from agents.multiagents import MultiRLAgents
 from common.utils import *
-
+import time
 from common.settings import *
 
 import torch
@@ -154,7 +154,8 @@ class Runner:
 
             if self.paras.learn_terminal:
                 self.agent.learn()
-            print('i_epoch: ', i_epoch, 'Gt: ', '%.2f' % Gt)
+            if i_epoch % 100 == 0:
+                print('i_epoch: ', i_epoch, 'Gt: ', '%.2f' % Gt)
             reward_tag = 'reward'
             self.writer.add_scalars(reward_tag, global_step=i_epoch,
                                     tag_scalar_dict={'return': Gt})
@@ -192,6 +193,7 @@ class Runner:
                 next_state, reward, done, info_before, info_after = self.env.step(joint_act, train=False)
                 state = next_state
                 Gt_real += reward
+                time.sleep(1)
                 if done:
                     record.append(Gt_real)
                     break
