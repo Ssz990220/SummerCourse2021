@@ -114,7 +114,7 @@ def main(args):
             if args.render:
                 img = env.render_board()
                 board_render = cv2.imshow('board', img)
-                cv2.waitKey(0)
+                cv2.waitKey(10)
                 time.sleep(0.5)
 
             next_state_rl_agent = get_state(next_state, 0)
@@ -159,7 +159,8 @@ def main(args):
                     args.render = False
                     cv2.destroyAllWindows()
                 if episode % args.view_interval == 0:
-                    args.render = True
+                    # args.render = True
+                    pass
                 if episode % args.save_interval == 0:
                     model.save(run_dir, episode)
                     # args.render = True
