@@ -5,6 +5,7 @@ def get_args():
     parser = argparse.ArgumentParser()
 
     parser.add_argument('--game_name', default='snake1v1')
+    parser.add_argument('--render', default=False)
     parser.add_argument('--algo', default='dqn', help='dqn')
 
     # trainer

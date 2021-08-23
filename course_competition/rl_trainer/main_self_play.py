@@ -14,6 +14,7 @@ from tensorboardX import SummaryWriter
 import numpy as np
 import random
 import torch
+import cv2
 
 env = make('snakes_1v1', conf=None)
 
@@ -109,6 +110,10 @@ def main(args):
                 actions = np.array([action, action2])
 
             next_state, reward, done, _, _ = env.step(env.encode(actions))
+            if args.render():
+                img = env.render_board()
+                board_render = cv2.imshow('board', img)
+                cv2.waitKey(10)
 
             next_state_rl_agent = get_state(next_state, 0)
 
