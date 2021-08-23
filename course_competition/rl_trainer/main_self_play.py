@@ -114,10 +114,11 @@ def main(args):
             if args.render:
                 img = env.render_board()
                 board_render = cv2.imshow('board', img)
-                cv2.waitKey(0)
+                cv2.waitKey(10)
                 time.sleep(0.5)
 
             next_state_rl_agent = get_state(next_state, 0)
+            next_state_rl_agent2 = get_state(next_state, 1)
 
             reward = np.array(reward)
             episode_reward += reward
@@ -130,9 +131,11 @@ def main(args):
                 else:
                     step_reward = get_reward(next_state_rl_agent, ctrl_agent_index, reward, final_result=3)
                 next_obs = np.zeros((ctrl_agent_num, obs_dim))
+                next_obs2 = np.zeros((ctrl_agent_num, obs_dim))
             else:
                 step_reward = get_reward(next_state_rl_agent, ctrl_agent_index, reward, final_result=0)
                 next_obs = get_observations(next_state_rl_agent, agent_trained_index, obs_dim)
+                next_obs2 = get_observations(next_state_rl_agent2, agent_copied_index, obs_dim)
 
             done = np.array([done] * ctrl_agent_num)
 
@@ -141,6 +144,7 @@ def main(args):
             model.store_transition(trans)
             model.learn()
             obs = next_obs
+            obs2 = next_obs2
             state = next_state
             step += 1
 

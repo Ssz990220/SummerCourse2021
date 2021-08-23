@@ -41,7 +41,9 @@ ctrl_agent_index = [0]  # in code
 ctrl_agent_num = len(ctrl_agent_index)
 model = DQN_COPY(obs_dim, action_dim, args.hidden_size)
 run_dir = 'H:\\Project\\SummerCourse2021\\course_competition\\rl_trainer\\models\\snake1v1\\run8'
+model2 = DQN_COPY(obs_dim, action_dim, args.hidden_size)
 model.load(run_dir, 20000)
+model2.load(run_dir, 20000)
 while episode < args.max_episodes:
     state = env.reset()
     state_rl_agent_controlled = get_state(state, 0)
@@ -55,7 +57,7 @@ while episode < args.max_episodes:
     
     while True:
         action = model.choose_action(obs)
-        action2 = get_greedy(state[1])[0]
+        action2 = model2.choose_action(obs2)
         actions = np.array([action, action2])
 
         next_state, reward, done, _, _ = env.step(env.encode(actions))
@@ -64,6 +66,7 @@ while episode < args.max_episodes:
         cv2.waitKey(10)
         time.sleep(0.5)
         next_state_rl_agent = get_state(next_state, 0)
+        next_state_rl_agent2 = get_state(next_state, 1)
         reward = np.array(reward)
         episode_reward += reward
         if done:
@@ -74,10 +77,13 @@ while episode < args.max_episodes:
             else:
                 step_reward = get_reward(next_state_rl_agent, ctrl_agent_index, reward, final_result=3)
             next_obs = np.zeros((ctrl_agent_num, obs_dim))
+            next_obs2 = np.zeros((ctrl_agent_num, obs_dim))
         else:
             next_obs = get_observations(next_state_rl_agent, agent_trained_index, obs_dim)
+            next_obs2 = get_observations(next_state_rl_agent2, agent_copied_index, obs_dim)
         done = np.array([done] * ctrl_agent_num)
         obs = next_obs
+        obs2 = next_obs2
         state = next_state
         step += 1
         if args.episode_length <= step or (True in done):
