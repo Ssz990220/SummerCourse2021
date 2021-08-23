@@ -15,6 +15,7 @@ import numpy as np
 import random
 import torch
 import cv2
+import time
 
 env = make('snakes_1v1', conf=None)
 
@@ -110,10 +111,11 @@ def main(args):
                 actions = np.array([action, action2])
 
             next_state, reward, done, _, _ = env.step(env.encode(actions))
-            if args.render():
+            if args.render:
                 img = env.render_board()
                 board_render = cv2.imshow('board', img)
-                cv2.waitKey(10)
+                cv2.waitKey(0)
+                time.sleep(0.5)
 
             next_state_rl_agent = get_state(next_state, 0)
 
@@ -153,9 +155,14 @@ def main(args):
                     writer.add_scalars(loss_tag, global_step=episode,
                                        tag_scalar_dict={'loss': model.loss})
                     print(f'\t\t\t\tloss {model.loss:.3f}')
-
+                if episode % args.view_interval == 1:
+                    args.render = False
+                    cv2.destroyAllWindows()
+                if episode % args.view_interval == 0:
+                    args.render = True
                 if episode % args.save_interval == 0:
                     model.save(run_dir, episode)
+                    # args.render = True
                     if episode % args.update_policy_freq == 0:
                         model2.load(run_dir, episode)
                         is_init = False
