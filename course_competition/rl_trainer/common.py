@@ -168,6 +168,17 @@ def logits_greedy(state, info, logits, height, width):
 
     return action_list
 
+def get_greedy(state):
+    state_copy = state.copy()
+    agents_index = state_copy["controlled_snake_index"]
+    board_width = state_copy['board_width']
+    board_height = state_copy['board_height']
+    beans_positions = state_copy[1]
+    snakes_positions = {key: state_copy[key] for key in state_copy.keys() & {2, 3}}
+    snake_map = make_grid_map(board_width, board_height, beans_positions, snakes_positions)
+    state = np.array(snake_map)
+    action = greedy_snake(state, beans_positions, snakes_positions, board_width, board_height, [3])
+    return action
 
 def get_surrounding(state, width, height, x, y):
     surrounding = [state[(y - 1) % height][x],  # up

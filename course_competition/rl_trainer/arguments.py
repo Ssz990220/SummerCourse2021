@@ -28,6 +28,7 @@ def get_args():
     parser.add_argument('--epsilon_end', default=0.05, type=float)
     parser.add_argument('--hidden_size', default=256, type=int)
     parser.add_argument('--target_replace', default=100, type=int)
+    parser.add_argument('--update_policy_freq', default=5000, type=int)
 
     # seed
     parser.add_argument('--seed_nn', default=1, type=int)
