@@ -6,6 +6,7 @@ def get_args():
 
     parser.add_argument('--game_name', default='snake1v1')
     parser.add_argument('--render', default=False)
+    parser.add_argument('--view_interval', default=100)
     parser.add_argument('--algo', default='dqn', help='dqn')
 
     # trainer
@@ -17,7 +18,7 @@ def get_args():
     parser.add_argument('--run_redo', default=None, type=int)
 
     # algo
-    parser.add_argument('--output_activation', default='softmax', type=str, help='tanh/softmax')
+    parser.add_argument('--output_activation', default='relu', type=str, help='tanh/softmax')
     parser.add_argument('--buffer_size', default=int(1e5), type=int)
     parser.add_argument('--tau', default=0.001, type=float)
     parser.add_argument('--gamma', default=0.95, type=float)
