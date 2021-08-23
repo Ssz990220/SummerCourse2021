@@ -12,7 +12,9 @@ class Critic(nn.Module):
         self.input_size = input_size
         self.output_size = output_size
         self.linear1 = nn.Linear(input_size, hidden_size)
+        self.linear1.weight.data.normal_(0,0.1)
         self.linear2 = nn.Linear(hidden_size, output_size)
+        self.linear2.weight.data.normal_(0,0.1)
 
     def forward(self, x):
         x = F.relu(self.linear1(x))
