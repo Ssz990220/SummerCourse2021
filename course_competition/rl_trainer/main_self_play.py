@@ -163,7 +163,8 @@ def main(args):
                     args.render = False
                     cv2.destroyAllWindows()
                 if episode % args.view_interval == 0:
-                    args.render = True
+                    # args.render = True
+                    pass
                 if episode % args.save_interval == 0:
                     model.save(run_dir, episode)
                     # args.render = True
