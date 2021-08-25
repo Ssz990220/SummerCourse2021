@@ -10,7 +10,7 @@ def get_args():
     parser.add_argument('--algo', default='dqn', help='dqn')
 
     # trainer
-    parser.add_argument('--max_episodes', default=30000, type=int)
+    parser.add_argument('--max_episodes', default=200000, type=int)
     parser.add_argument('--episode_length', default=5000, type=int)
     parser.add_argument('--save_interval', default=1000, type=int)
     parser.add_argument('--model_episode', default=0, type=int)
@@ -30,7 +30,7 @@ def get_args():
     parser.add_argument('--epsilon_end', default=0.05, type=float)
     parser.add_argument('--hidden_size', default=256, type=int)
     parser.add_argument('--target_replace', default=100, type=int)
-    parser.add_argument('--update_policy_freq', default=10000, type=int)
+    parser.add_argument('--update_policy_freq', default=20000, type=int)
 
     # seed
     parser.add_argument('--seed_nn', default=1, type=int)

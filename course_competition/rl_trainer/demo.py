@@ -40,10 +40,10 @@ episode = 0
 ctrl_agent_index = [0]  # in code
 ctrl_agent_num = len(ctrl_agent_index)
 model = DQN_COPY(obs_dim, action_dim, args.hidden_size)
-run_dir = 'H:\\Project\\SummerCourse2021\\course_competition\\rl_trainer\\models\\snake1v1\\run8'
+run_dir = 'H:\\Project\\SummerCourse2021\\course_competition\\rl_trainer\\models\\snake1v1\\run12'
 model2 = DQN_COPY(obs_dim, action_dim, args.hidden_size)
-model.load(run_dir, 20000)
-model2.load(run_dir, 20000)
+model.load(run_dir, 200000)
+model2.load(run_dir, 150000)
 while episode < args.max_episodes:
     state = env.reset()
     state_rl_agent_controlled = get_state(state, 0)
@@ -57,7 +57,8 @@ while episode < args.max_episodes:
     
     while True:
         action = model.choose_action(obs)
-        action2 = model2.choose_action(obs2)
+        # action2 = model2.choose_action(obs2)
+        action2 = 2
         actions = np.array([action, action2])
 
         next_state, reward, done, _, _ = env.step(env.encode(actions))

@@ -6,22 +6,40 @@ import sys
 base_dir = Path(__file__).resolve().parent
 sys.path.append(str(base_dir))
 from common import make_grid_map, get_surrounding, get_observations
-
-
+import os
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
 # ====================================== define algo ===========================================
 # todo
 class Critic(nn.Module):
     def __init__(self):
         super().__init__()
-        pass
+        self.input_size = state_dim
+        self.output_size = action_dim
+        self.linear1 = nn.Linear(state_dim, hidden_dim)
+        self.linear2 = nn.Linear(hidden_dim, action_dim)
+
+    def forward(self, x):
+        x = F.relu(self.linear1(x))
+        x = self.linear2(x)
+        return x
 
 
 # todo
 class DQN(object):
     def __init__(self):
-        pass
+        self.state_dim = state_dim
+        self.action_dim = action_dim
+        self.hidden_size = hidden_dim
+        self.critic_net = Critic()
+
+    def choose_action(self, observation):
+        observation = torch.tensor(observation, dtype=torch.float).view(1, -1)
+        action = torch.argmax(self.critic_net(observation)).item()
+        return action
     def load(self, file):
-        pass
+        self.critic_net.load_state_dict(torch.load(file))
 
 
 def to_joint_action(actions, num_agent):
@@ -36,8 +54,12 @@ def to_joint_action(actions, num_agent):
 
 # ===================================== define agent =============================================
 #todo
+state_dim = 18
+action_dim = 4
+hidden_dim = 256
 agent = DQN()
-agent.load('critic_net.pth')
+critic_net_file = os.path.dirname(os.path.abspath(__file__)) + '/critic.pth'
+agent.load(critic_net_file)
 
 
 # ================================================================================================
@@ -57,5 +79,11 @@ return:
     action: eg. [[[0,0,0,1]]]
 """
 # todo
-def my_controller(observation, action_space_list, is_act_continuous):
-    pass
+def get_state(all_observation):
+    return all_observation[0] # todo
+
+def my_controller(observation, action_space_list, is_act_continuous=False):
+    agent_trained_index = observation['controlled_snake_index']
+    obs = get_observations(observation, agent_trained_index, 18)
+    action = agent.choose_action(obs)
+    return to_joint_action(action, 2)
